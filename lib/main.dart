@@ -1,6 +1,26 @@
+import 'package:expensetracker/collections/budget.dart';
+import 'package:expensetracker/collections/expense.dart';
+import 'package:expensetracker/collections/income.dart';
+import 'package:expensetracker/collections/receipt.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+late Isar isar;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final dir = await getApplicationDocumentsDirectory();
+
+  if (Isar.instanceNames.isEmpty) {
+    isar = await Isar.open(
+      [BudgetSchema, ExpenseSchema, ReceiptSchema, IncomeSchema],
+      directory: dir.path,
+      name: 'expenseInstance',
+    );
+  }
+
   runApp(const MyApp());
 }
 
